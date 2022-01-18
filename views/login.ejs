@@ -8,6 +8,32 @@
 </head>
 <body>
     <h1>Welcome to MGT Antakshari</h1>
-    <form action=""></form>
+    <form action="\home" method='POST' name="myform">
+        <label for="num" name="num">Number of Player</label>
+        <input type="number" name="num" id="num" onkeyup="displayPlayer()"><br>
+        <label for="groupName" name="groupName">Group Name</label>
+        <input type="text" name="groupName" id="groupName"><br>
+        <div id="display"></div>
+    </form>
+    <script>
+        function displayPlayer(){
+            num = document.getElementById('num').value;
+            var container = document.getElementById('display');
+            container.removeChild(container.childNodes);
+            console.log(num);
+            for(let index=0; index<num;index++){
+            var text = document.createElement('input');
+            text.type = 'text';
+            text.className = 'player';
+            
+            container.appendChild(text);
+            }
+        }
+
+        document.getElementById("myform").addEventListener("click", function(event){
+            event.preventDefault()
+          });
+
+    </script>
 </body>
 </html>
