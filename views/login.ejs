@@ -4,36 +4,91 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>login</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cookie&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
+    <title>Home</title>
 </head>
-<body>
-    <h1>Welcome to MGT Antakshari</h1>
-    <form action="\home" method='POST' name="myform">
-        <label for="num" name="num">Number of Player</label>
-        <input type="number" name="num" id="num" onkeyup="displayPlayer()"><br>
-        <label for="groupName" name="groupName">Group Name</label>
-        <input type="text" name="groupName" id="groupName"><br>
-        <div id="display"></div>
+<body onmouseover="play()">
+    <div id="bg"></div>
+    <div id="padding">
+    <form action="/home" method='POST' id="myform">
+    <h1 class="fancy namer">Decod'shala</h1>
+    <div id="cred" class="col-lg-6 col-md-8 col-sm-10 col-10 mx-auto">
+        <div class="col-12" id="blur"></div>
+        <div class="mb-3">
+            <label for="groupName" class="form-label">Group Name</label>
+            <input type="text" name="groupName" class="form-control" id="groupName" required onchange="play()">
+        </div>
+        <div class="mb-3">
+            <label for="number" class="form-label">Mobile Number</label>
+            <input type="text" name="number" class="form-control" id="number" minlength="10" maxlength="10" required>
+        </div>
+        <div class="mb-3">
+            <label for="num" class="form-label">Number of Members per team</label>
+            <input type="number" name="num" class="form-control" onkeyup="displayPlayer()" id="num" required>
+        </div>
+        
+        <a role="button" href="#display" class="btn btn-outline-light btn-lg mt-3">Let's Go</a>
+    </div>
+    <div id="display" class="row d-flex justify-content-center mx-auto"></div>
+    <input type="hidden" id="secret" name="players">
     </form>
+    <audio id="audio" controls loop>
+        <source src="bg.mp3" type="audio/mp3">
+    </audio>
+</div>
+<footer>
+    <a href="/adminLogin" class="mx-3">Admin</a>
+    <a href="/results" class="mx-3">Result</a>
+</footer>
     <script>
+        
         function displayPlayer(){
-            num = document.getElementById('num').value;
-            var container = document.getElementById('display');
-            container.removeChild(container.childNodes);
+            let num = document.getElementById('num').value;
+            let container = document.getElementById('display');
+            container.innerHTML = '';
             console.log(num);
+            let title = document.createElement('h1');
+            title.innerHTML = "Player names";
+            title.className = 'fancy';
+            container.appendChild(title);
             for(let index=0; index<num;index++){
-            var text = document.createElement('input');
+                let div = document.createElement('div');
+                div.className = 'col-lg-4 col-md-5 col-10 my-3';
+            let text = document.createElement('input');
             text.type = 'text';
-            text.className = 'player';
-            
-            container.appendChild(text);
+            text.className = 'player form-control';
+            text.pattern = '^[^~]+$';
+            div.appendChild(text);
+            container.appendChild(div);
+            }
+            if(num > 0) {
+            container.innerHTML += '<div class="col-12"><button type="submit" class="btn btn-lg btn-danger mt-3">Ready to Decode!</button></div>';
             }
         }
 
-        document.getElementById("myform").addEventListener("click", function(event){
+        document.getElementById("myform").addEventListener("submit", function(event){
             event.preventDefault()
+            let num = document.getElementById('num').value;
+            let players="";
+            for(let i=0; i<num;i++){
+                if(i != 0) {
+                    players += '~';
+                }
+                players += document.getElementsByClassName('player')[i].value;
+                
+            }
+            console.log(players);
+            document.getElementById("secret").value = players;
+            document.getElementById("myform").submit();
           });
-
+          function play() {
+            document.getElementById("audio").play();
+        }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </body>
 </html>
